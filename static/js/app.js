@@ -50,6 +50,13 @@ function DrawBarGraph(sampleId){
             orientation: "h"
         }
 
+        var barArray = [barData];
+
+        var barLayout = {
+            title: `chart title ${sampleId}`
+
+
+        };
     });
 
 };
