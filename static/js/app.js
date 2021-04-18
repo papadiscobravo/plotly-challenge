@@ -53,10 +53,12 @@ function DrawBarGraph(sampleId){
         console.log(barArray);
 
         var barLayout = {
-            title: `Bacteria sampled from test subject ${sampleId}'s belly button`,
-            yaxis: {title: "Bacterium"},
+            title: `Top ten bacteria sampled from test subject ${sampleId}'s belly button by count`,
+            yaxis: {title: "Operational Taxonomic Unit (OTU)"},
             yaxis: {autorange: "reversed"},
-            xaxis: {title: "Count"}
+            xaxis: {title: "Count of each bacterium"},
+            height: 500,
+            width: 1000
         };
 
     Plotly.newPlot("bar", barArray, barLayout);
@@ -88,12 +90,17 @@ function DrawBubbleChart(sampleId){
         console.log(`Here are the yticks: ${yticks}`);
 
         var bubbleData = {
-            x: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            y: yticks,
             type: "bubble",
-            marker: {size: sample_values.slice(0,10)},
+            x: otu_ids.slice(0,10),
+            y: sample_values.slice(0,10),
+            mode: "markers",
+            marker: {
+                size: sample_values.slice(0,10),
+                color: otu_ids.slice(0,10)
+            },
             text: otu_labels.slice(0,10)
         }
+
         console.log("Here is the bubble chart data, as bubbleData:"); 
         console.log(bubbleData);
 
@@ -102,12 +109,12 @@ function DrawBubbleChart(sampleId){
         console.log(bubbleArray);
 
         var bubbleLayout = {
-            title: `Bacteria sampled from test subject ${sampleId}'s belly button`,
+            title: `Top ten bacteria sampled from test subject ${sampleId}'s belly button by count`,
             showlegend: false,
-            height: 800,
-            width: 600,
-            yaxis: {title: "Bacterium"},
-            xaxis: {title: "Count"}
+            height: 500,
+            width: 1000,
+            yaxis: {title: "Count of each bacterium"},
+            xaxis: {title: "Operational taxonomic unit (OTU) identification number"}
         };
 
     Plotly.newPlot("bubble", bubbleArray, bubbleLayout);
@@ -116,9 +123,31 @@ function DrawBubbleChart(sampleId){
     
 
 };
-
+// CREATE SHOW METADATA FUNCTION
 function ShowMetadata(sampleId){
-    console.log(`ShowMetadata(${sampleId})`);
+    console.log(`ShowMetadata for ID: (${sampleId})`);
+        
+    d3.json("samples.json").then(data => {
+
+        var metadata = data.metadata;
+        console.log("Here's all the metadata:");
+        console.log(metadata);
+        var testSubjectMetadata = metadata.filter(s => s.id == sampleId);     
+
+        // How to put the JavaScript variable testSubjectMetadata into the HTML in div id="sample-metadata" class="panel-body"
+
+        // These console.logs return the same things to the console...
+        console.log(`Test subject ${sampleId}'s demographic information (metadata) as the object itself is:`);
+        console.log(testSubjectMetadata);
+
+        // ...as these do:
+        console.log(`Test subject ${sampleId}'s demographic information (metadata) as the values in the object:`);
+        console.log(Object.values(testSubjectMetadata));
+        document.getElementById("sample-metadata").innerHTML = Object.values(testSubjectMetadata);
+        // It seems I'm putting the object in the right place (the "sample-metadata" div),
+        // but not in a way HTML can make sense of.
+    });
+
 };
 
 function optionChanged(newSampleId) {
