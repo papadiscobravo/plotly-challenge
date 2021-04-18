@@ -56,7 +56,7 @@ function DrawBarGraph(sampleId){
             title: `Top ten bacteria sampled from test subject ${sampleId}'s belly button by count`,
             yaxis: {title: "Operational Taxonomic Unit (OTU)"},
             yaxis: {autorange: "reversed"},
-            xaxis: {title: "Count of each bacterium"},
+            xaxis: {title: "Count"},
             height: 500,
             width: 1000
         };
@@ -113,7 +113,7 @@ function DrawBubbleChart(sampleId){
             showlegend: false,
             height: 500,
             width: 1000,
-            yaxis: {title: "Count of each bacterium"},
+            yaxis: {title: "Count"},
             xaxis: {title: "Operational taxonomic unit (OTU) identification number"}
         };
 
