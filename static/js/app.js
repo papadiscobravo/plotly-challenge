@@ -34,13 +34,6 @@ function DrawBarGraph(sampleId){
         console.log(`Here are OTU sample values: ${sample_values}`);
 
         yticks = otu_ids.slice(0,10).map(otuId => `OTU ${otuId}`); // TBD
-        var barData = {
-            x: sample_values.slice(0,10),
-            y: yticks,
-            type: "bar",
-            text: otu_labels.slice(0,10),
-            orientation: "h"
-        }
         console.log(`Here are the yticks: ${yticks}`);
 
         var barData = {
@@ -58,12 +51,13 @@ function DrawBarGraph(sampleId){
         console.log(barArray);
 
         var barLayout = {
-            title: `Bacteria per person: test subject ${sampleId}`,
-            // xaxis: {title: "this is the x axis"},
-            yaxis: {title: "this is the y axis"}
+            title: `Bacteria sampled from test subject ${sampleId}'s belly button`,
+            yaxis: {title: "Bacterium"},
+            yaxis: {autorange: "reversed"},
+            xaxis: {title: "Count"}
         };
 
-        Plotly.newPlot("bar", barData, barLayout);
+    Plotly.newPlot("bar", barArray, barLayout);
 
     });
 
@@ -91,6 +85,7 @@ function InitDashboard() {
 
     // Populate the dropdown
     var selector = d3.select("#selDataset");
+    console.log("dropdown populated");
 
     d3.json("samples.json").then(function(data) {
 
@@ -101,8 +96,10 @@ function InitDashboard() {
             text(sampleId).
             property("value", sampleId);
         });
+        console.log(`sampleNames: ${sampleNames}`);
 
         var id = sampleNames[0];
+        console.log(`id: ${id}`);
 
         DrawBarGraph(id);
         DrawBubbleChart(id);
