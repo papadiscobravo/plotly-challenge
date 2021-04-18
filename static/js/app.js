@@ -133,19 +133,25 @@ function ShowMetadata(sampleId){
         console.log("Here's all the metadata:");
         console.log(metadata);
         var testSubjectMetadata = metadata.filter(s => s.id == sampleId);     
-
-        // How to put the JavaScript variable testSubjectMetadata into the HTML in div id="sample-metadata" class="panel-body"
-
-        // These console.logs return the same things to the console...
         console.log(`Test subject ${sampleId}'s demographic information (metadata) as the object itself is:`);
         console.log(testSubjectMetadata);
 
-        // ...as these do:
-        console.log(`Test subject ${sampleId}'s demographic information (metadata) as the values in the object:`);
-        console.log(Object.values(testSubjectMetadata));
-        document.getElementById("sample-metadata").innerHTML = Object.values(testSubjectMetadata);
-        // It seems I'm putting the object in the right place (the "sample-metadata" div),
-        // but not in a way HTML can make sense of.
+        // Now how to put the JavaScript variable testSubjectMetadata into the HTML in div id="sample-metadata" class="panel-body"
+        // metadata stores the following for each test subject:
+        // id, wfreq, bbtype ("I" or "O"), location, age, gender, ethnicity
+
+        MetadataToHTML =
+            "ID: " + testSubjectMetadata[0].id + "<br>" +
+            "reports washing belly button " + testSubjectMetadata[0].wfreq + " times per week" + "<br>" +
+            "innie or outie (I or O): " + testSubjectMetadata[0].bbtype + "<br>" +
+            "age: " + testSubjectMetadata[0].age + "<br>" +
+            "gender: " + testSubjectMetadata[0].gender + "<br>" +
+            "location: " + testSubjectMetadata[0].location + "<br>" +
+            "ethnicity: " + testSubjectMetadata[0].ethnicity;
+
+        document.getElementById("sample-metadata").innerHTML = MetadataToHTML;
+        console.log(MetadataToHTML);
+
     });
 
 };
@@ -155,7 +161,6 @@ function optionChanged(newSampleId) {
     DrawBarGraph(newSampleId);
     DrawBubbleChart(newSampleId);
     ShowMetadata(newSampleId);
-
 };
 
 
