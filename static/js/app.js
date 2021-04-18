@@ -1,4 +1,4 @@
-console.log("Opened app.py, where the work will happen.");
+console.log("opened app.py");
 
 // Fetch the JSON data and console log it
 d3.json("samples.json").then(function(data) {
@@ -17,21 +17,21 @@ function DrawBarGraph(sampleId){
     console.log(`DrawBarGraph(${sampleId})`);
 
     d3.json("samples.json").then(data => {
-        console.log(data);
 
-        // there's an error down here
+        // I think there's an error down here:
         var samples = data.samples;
         var resultArray = samples.filter(s => s.id == sampleId);
-        // there's an error up there
+        // I think there's an error up there.
         console.log(resultArray);
         var result = resultArray[0];
+        console.log("Here's the result of filtering the data:");
         console.log(result);
         var otu_ids = result.otu_ids;
         var otu_labels = result.otu_labels;
         var sample_values = result.sample_values;
-        console.log(otu_ids);
-        console.log(otu_labels);
-        console.log(sample_values);
+        console.log(`Here are OTU IDs: ${otu_ids}`);
+        console.log(`Here are OTU labels: ${otu_labels}`);
+        console.log(`Here are OTU sample values: ${sample_values}`);
 
         yticks = otu_ids.slice(0,10).map(otuId => `OTU ${otuId}`); // TBD
         var barData = {
@@ -41,6 +41,7 @@ function DrawBarGraph(sampleId){
             text: otu_labels.slice(0,10),
             orientation: "h"
         }
+        console.log(`Here are the yticks: ${yticks}`);
 
         var barData = {
             x: sample_values.slice(0,10),
@@ -49,14 +50,21 @@ function DrawBarGraph(sampleId){
             text: otu_labels.slice(0,10),
             orientation: "h"
         }
+        console.log("Here is the bar graph data, as barData:"); 
+        console.log(barData);
 
         var barArray = [barData];
+        console.log("Here's the bar graph data as an array, called barArray:"); 
+        console.log(barArray);
 
         var barLayout = {
-            title: `chart title ${sampleId}`
-
-
+            title: `Bacteria per person: test subject ${sampleId}`,
+            // xaxis: {title: "this is the x axis"},
+            yaxis: {title: "this is the y axis"}
         };
+
+        Plotly.newPlot("bar", barData, barLayout);
+
     });
 
 };
@@ -85,7 +93,6 @@ function InitDashboard() {
     var selector = d3.select("#selDataset");
 
     d3.json("samples.json").then(function(data) {
-        console.log(data);
 
         var sampleNames = data.names;
 
